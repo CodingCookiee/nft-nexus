@@ -2,7 +2,7 @@
 import React from 'react';
 import { Header, Footer } from '../../components/layout';
 import WalletConnector from '../../components/ui/client/WalletConnector';
-import { Web3Provider } from '../../../context/Web3Provider';
+import { Web3Provider } from '../../context/Web3Provider';
 
 const Dashboard = () => {
     return (
