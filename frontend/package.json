@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.2",
+    "@tanstack/react-query": "^5.69.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "connectkit": "^1.8.2",
     "frontend": "file:",
     "lucide-react": "^0.484.0",
     "next": "15.2.3",
@@ -20,7 +22,9 @@
     "react-dom": "^19.0.0",
     "sonner": "^2.0.1",
     "tailwind-merge": "^3.0.2",
-    "tw-animate-css": "^1.2.4"
+    "tw-animate-css": "^1.2.4",
+    "viem": "^2.23.15",
+    "wagmi": "^2.14.15"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
