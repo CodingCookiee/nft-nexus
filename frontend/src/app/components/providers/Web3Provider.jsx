@@ -5,29 +5,30 @@ import { mainnet } from "wagmi/chains";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 
-const config = createConfig(
-  getDefaultConfig({
-    // Your dApps chains
-    chains: [mainnet],
-    transports: {
-      // RPC URL for each chain
-      [mainnet.id]: http(
-        `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
-      ),
-    },
+// Export the config for use in siweServer.js
+export const ckConfig = getDefaultConfig({
+  // Your dApps chains
+  chains: [mainnet],
+  transports: {
+    // RPC URL for each chain
+    [mainnet.id]: http(
+      `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
+    ),
+  },
 
-    // Required API Keys
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+  // Required API Keys
+  walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
 
-    // Required App Info
-    appName: "Wagmi App",
+  // Required App Info
+  appName: "NFT Nexus",
 
-    // Optional App Info
-    appDescription: "Wagmi Dapp- Built with Wagmi",
-    appUrl: "http://localhost:3000", // your app's url
-    appIcon: "/next.svg", // your app's icon, no bigger than 1024x1024px (max. 1MB)
-  })
-);
+  // Optional App Info
+  appDescription: "NFT Nexus - Your NFT Dashboard & Marketplace",
+  appUrl: "http://localhost:3000", // your app's url
+  appIcon: "/app/favicon.png", // your app's icon
+});
+
+const config = createConfig(ckConfig);
 
 const queryClient = new QueryClient();
 
@@ -38,14 +39,14 @@ export const Web3Provider = ({ children }) => {
         <ConnectKitProvider
           theme="rounded"
           mode='auto'
-          
           options={{
             embedGoogleFonts: true,
-            walletConnectName:'WalletConnect',
+            walletConnectName: 'WalletConnect',
             overlayBlur: 4,
             truncateLongENSAddress: true,
             walletConnectCTA: 'both',
-            
+            // Enable SIWE in the ConnectKit modal
+            enableSIWE: true,
             disclaimer: (
               <>
                 By connecting your wallet you agree to the{" "}
