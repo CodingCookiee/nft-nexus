@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { Text, Button } from '../app/components/ui/common';
 import Link from 'next/link';
 
 export default function Error({ error, reset }) {
@@ -10,29 +11,43 @@ export default function Error({ error, reset }) {
   }, [error]);
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">Something went wrong</h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
+        <Text
+        variant='h1' weight='bold'  align='center'
+         className="mb-4">Something went wrong</Text>
+        <Text 
+        variant='h6' align='center' color='secondary'
+        className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md mx-auto">
           We apologize for the inconvenience. An unexpected error has occurred.
-        </p>
+        </Text>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button
+          <Button
+          variant='outline'
             onClick={() => reset()}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg transition duration-300"
+            className="py-5 px-8 cursor-pointer"
           >
             Try again
-          </button>
+          </Button>
+          <Button
+            variant='default'
+            as={Link}
+            href="/dashboard"
+            className="py-5 px-8 bg-indigo-700 hover:bg-indigo-500">
+
           <Link
             href="/"
-            className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white px-6 py-3 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300"
+            className=""
           >
             Go back home
           </Link>
+          </Button>
         </div>
-        <p className="mt-8 text-sm text-gray-500 dark:text-gray-400">
+        <Text
+        variant='small' align='center' color='secondary'
+         className="mt-8 ">
           If the problem persists, please contact our support team.
-        </p>
+        </Text>
       </div>
     </div>
   );

@@ -2,12 +2,12 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Text, Button } from '../../components/ui/common';
-import { Web3Provider } from '../../context/Web3Provider';
-import { siweClient } from '../../utils/siweClient';
+import { useSIWE } from 'connectkit'; // Import useSIWE hook instead
 import WalletConnector from '../../components/ui/client/WalletConnector';
 
 const SignIn = () => {
     const router = useRouter();
+    const { signIn, status } = useSIWE(); // Use the hook to access SIWE functionality
 
     // Handle Google Sign In
     const handleGoogleSignIn = async () => {
@@ -15,6 +15,13 @@ const SignIn = () => {
         // After successful sign in, redirect to dashboard
         router.push('/dashboard');
     };
+
+    // Handle successful SIWE authentication
+    React.useEffect(() => {
+        if (status === 'authenticated') {
+            router.push('/dashboard');
+        }
+    }, [status, router]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-gray-900 dark:to-indigo-950">
@@ -38,18 +45,8 @@ const SignIn = () => {
                         <Text variant="h5" color="default" align="center" className="mb-4">
                             Connect with Wallet
                         </Text>
-                        <Web3Provider>
-                            <siweClient.Provider
-                                enabled={true}
-                                onSignIn={(session) => {
-                                    if (session) {
-                                        router.push('/dashboard');
-                                    }
-                                }}
-                            >
-                                <WalletConnector compact={true} />
-                            </siweClient.Provider>
-                        </Web3Provider>
+                        {/* No need for additional providers here */}
+                        <WalletConnector compact={true} />
                     </div>
 
                     <div className="relative">
