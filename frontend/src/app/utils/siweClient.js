@@ -10,11 +10,16 @@ export const siweConfig = {
       const res = await fetch("/api/nonce");
 
       console.log("Nonce response :", res.status);
+
+      const resClone = await res.clone();
+      const resText = await resClone.text();
+      console.log("Nonce response text:", resText);
+    
       
       if (!res.ok) {
-        const errorText = await res.json();
-        console.error("Failed to fetch nonce:", errorText);
-        throw new Error(`Failed to fetch nonce: ${res.status} ${errorText}`);
+      
+        console.error("Failed to fetch nonce:", resText);
+        throw new Error(`Failed to fetch nonce: ${res.status} ${resText}`);
       }
       
       const data = await res.json();
@@ -46,9 +51,9 @@ export const siweConfig = {
       });
       
       if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Error verifying message:", errorText);
-        throw new Error(`Error verifying message: ${res.status} ${errorText}`);
+        const resText = await res.text();
+        console.error("Error verifying message:", resText);
+        throw new Error(`Error verifying message: ${res.status} ${resText}`);
       }
       
       const data = await res.json();
