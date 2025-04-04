@@ -12,16 +12,17 @@ const sessionOptions = {
 };
 
 export async function GET() {
-  const session = await getIronSession(cookies(), sessionOptions);
+  try {
+    const cookieStore = await cookies();
+    const session = await getIronSession(cookieStore, sessionOptions);
 
-  session.nonce = generateNonce();
-  await session.save();
+    session.nonce = generateNonce();
+    await session.save();
 
-  return new NextResponse({ nonce: session.nonce }, {
-    status: 200,
-    message: "Nonce generated",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  
+    return NextResponse.json({ nonce: session.nonce });
+  } catch (error) {
+    console.error("Error generating nonce:", error);
+    return NextResponse.json({ error: "Failed to generate nonce" }, { status: 500 });
+  }
 }

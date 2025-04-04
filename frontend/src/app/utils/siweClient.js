@@ -8,10 +8,11 @@ export const siweConfig = {
     console.log("Fetching nonce...");
     try {
       const res = await fetch("/api/nonce");
+
       console.log("Nonce response :", res.status);
       
       if (!res.ok) {
-        const errorText = await res.text();
+        const errorText = await res.json();
         console.error("Failed to fetch nonce:", errorText);
         throw new Error(`Failed to fetch nonce: ${res.status} ${errorText}`);
       }

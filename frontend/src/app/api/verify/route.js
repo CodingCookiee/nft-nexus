@@ -12,7 +12,8 @@ const sessionOptions = {
 };
 
 export async function POST(request) {
-  const session = await getIronSession(cookies(), sessionOptions);
+  const cookieStore = await cookies();
+  const session = await getIronSession(cookieStore, sessionOptions);
 
   try {
     const { message, signature } = await request.json();
