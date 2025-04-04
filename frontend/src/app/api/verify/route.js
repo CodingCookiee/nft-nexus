@@ -12,39 +12,112 @@ const sessionOptions = {
 };
 
 export async function POST(request) {
-  const cookieStore = await cookies();
-  const session = await getIronSession(cookieStore, sessionOptions);
-
   try {
-    const { message, signature } = await request.json();
-    const siweMessage = new SiweMessage(message);
-    const fields = await siweMessage.verify({ signature });
+    const cookieStore = await cookies();
+    const session = await getIronSession(cookieStore, sessionOptions);
 
-    if (fields.data.nonce !== session.nonce) {
+    // Log the current session nonce for debugging
+    console.log("Server: Current session nonce:", session.nonce);
+
+    const { message, signature } = await request.json();
+    console.log("Server: Received message type:", typeof message);
+    console.log("Server: Received message:", message);
+    console.log("Server: Received signature:", signature);
+
+    // Create SIWE message based on what was received
+    let siweMessage;
+    try {
+      if (typeof message === "string") {
+        // Try to parse as JSON if it's a string
+        console.log("Server: Parsing message from string");
+        siweMessage = new SiweMessage(JSON.parse(message));
+      } else if (typeof message === "object") {
+        // If it's already an object, pass directly
+        console.log("Server: Using message object directly");
+
+        // If it's a SIWE message object with prepareMessage method
+        if (message.prepareMessage) {
+          siweMessage = message;
+        } else {
+          // If it's a plain object, create new SIWE message
+          siweMessage = new SiweMessage(message);
+        }
+      } else {
+        throw new Error("Invalid message format");
+      }
+
+      console.log("Server: Parsed SIWE message:", siweMessage);
+    } catch (parseError) {
+      console.error("Server: Error parsing message:", parseError);
       return NextResponse.json(
         {
           ok: false,
-          message: "Invalid nonce",
+          message: `Error parsing message: ${parseError.message}`,
         },
         {
-          status: 422,
+          status: 400,
         }
       );
     }
-    session.siwe = fields;
-    await session.save();
-    
-    // Return a success response
-    return NextResponse.json({ ok: true });
+
+    // Verify the message
+    try {
+      const fields = await siweMessage.verify({ signature });
+      console.log("Server: Verification fields:", fields);
+
+      if (!fields || !fields.data || !fields.data.nonce) {
+        throw new Error("Invalid verification result");
+      }
+
+      if (fields.data.nonce !== session.nonce) {
+        console.error("Server: Nonce mismatch:", {
+          messageNonce: fields.data.nonce,
+          sessionNonce: session.nonce,
+        });
+
+        return NextResponse.json(
+          {
+            ok: false,
+            message: "Invalid nonce",
+          },
+          {
+            status: 422,
+          }
+        );
+      }
+
+      // Store authentication in session
+      session.siwe = fields;
+      session.address = fields.data.address;
+      await session.save();
+
+      console.log("Server: Authentication successful for", fields.data.address);
+      // Return a success response
+      return NextResponse.json({
+        ok: true,
+        address: fields.data.address,
+      });
+    } catch (verifyError) {
+      console.error("Server: Verification error:", verifyError);
+      return NextResponse.json(
+        {
+          ok: false,
+          message: `Verification error: ${verifyError.message}`,
+        },
+        {
+          status: 400,
+        }
+      );
+    }
   } catch (error) {
-    console.error("SIWE verification error", error);
+    console.error("Server: SIWE verification error", error);
     return NextResponse.json(
       {
         ok: false,
         message: error.message,
       },
       {
-        status: 400,
+        status: 500,
       }
     );
   }

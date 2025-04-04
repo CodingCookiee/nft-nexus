@@ -10,17 +10,27 @@ const sessionOptions = {
   },
 };
 
-export async function POST() {
+export async function GET() {
   try {
     const cookieStore = await cookies();
     const session = await getIronSession(cookieStore, sessionOptions);
-    
-    // Clear session
-    session.destroy();
-    
-    return NextResponse.json({ success: true });
+
+    // Check if user is authenticated
+    if (!session.siwe?.data?.address) {
+      return NextResponse.json(
+        { message: "Not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    // Return session data
+    return NextResponse.json({
+      address: session.siwe.data.address,
+      chainId: session.siwe.data.chainId,
+      issuedAt: session.siwe.data.issuedAt,
+    });
   } catch (error) {
-    console.error("Error signing out:", error);
+    console.error("Error getting session:", error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }
