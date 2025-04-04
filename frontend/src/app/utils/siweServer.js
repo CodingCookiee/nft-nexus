@@ -1,14 +1,19 @@
 import { configureServerSideSIWE } from "connectkit-next-siwe";
-import { ckConfig } from "@/components/Web3Provider";
+import { mainnet } from "wagmi/chains";
+import { http } from "wagmi";
 
 export const siweServer = configureServerSideSIWE({
   config: {
-    chains: ckConfig.chains,
-    transports: ckConfig.transports,
+    chains: [mainnet],
+    transports: {
+      [mainnet.id]: http(
+        `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
+      ),
+    },
   },
   session: {
-    cookieName: "connectkit-next-siwe",
-    password: process.env.NEXT_SESSION_SECRET,
+    cookieName: "siwe",
+    password: process.env.IRON_SESSION_PASSWORD,
     cookieOptions: {
       secure: process.env.NODE_ENV === "production",
     },

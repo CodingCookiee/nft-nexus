@@ -1,3 +1,4 @@
 import { siweServer } from "../utils/siweServer"; // Your path to siweServer.js
 
-export default siweServer.apiRouteHandler;
+export const GET = siweServer.apiRouteHandler;
+export const POST = siweServer.apiRouteHandler;

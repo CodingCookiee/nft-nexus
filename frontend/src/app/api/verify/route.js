@@ -16,7 +16,7 @@ export async function POST(request) {
 
   try {
     const { message, signature } = await request.json();
-    const siweMessage = new siweMessage(message);
+    const siweMessage = new SiweMessage(message);
     const fields = await siweMessage.verify({ signature });
 
     if (fields.data.nonce !== session.nonce) {

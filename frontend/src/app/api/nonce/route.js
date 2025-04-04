@@ -4,7 +4,7 @@ import { generateNonce } from "siwe";
 import { NextResponse } from "next/server";
 
 const sessionOptions = {
-  cookieName: "siwe-session",
+  cookieName: "siwe",
   password: process.env.NEXT_IRON_SESSION_PASSWORD,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
