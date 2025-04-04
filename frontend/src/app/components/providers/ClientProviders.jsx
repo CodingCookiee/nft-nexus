@@ -65,26 +65,26 @@ export function ClientProviders({ children }) {
               truncateLongENSAddress: true,
               walletConnectCTA: 'both',
               enableSIWE: true,
-              disclaimer: (
-                <>
-                  By connecting your wallet you agree to the{" "}
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href=""
-                  >
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href=""
-                  >
-                    Privacy Policy
-                  </a>
-                </>
-              ),
+              // disclaimer: (
+              //   <>
+              //     By connecting your wallet you agree to the{" "}
+              //     <a
+              //       target="_blank"
+              //       rel="noopener noreferrer"
+              //       href=""
+              //     >
+              //       Terms of Service
+              //     </a>{" "}
+              //     and{" "}
+              //     <a
+              //       target="_blank"
+              //       rel="noopener noreferrer"
+              //       href=""
+              //     >
+              //       Privacy Policy
+              //     </a>
+              //   </>
+              // ),
             }}
           >
             {children}
