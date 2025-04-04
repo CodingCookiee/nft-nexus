@@ -53,6 +53,26 @@ export function ClientProviders({ children }) {
           onSignOut={() => {
             console.log("User signed out");
           }}
+          // adding endpoints to sign and verify the message
+          getNonce = { async () => {
+            const res = await fetch('/api/nonce');
+            return await res.text();
+          }
+        }
+
+          verifyMessage ={ async (message, signature) => {
+            const res = await fetch('/api/verify', {
+              method: 'POST',
+              headers:{
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ message, signature }),
+            });
+            return await res.json();
+          }
+
+          }
+
         >
           <ConnectKitProvider
             theme="rounded"
@@ -70,7 +90,7 @@ export function ClientProviders({ children }) {
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href=""
+                    // href=""
                   >
                     Terms of Service
                   </a>{" "}
@@ -78,7 +98,7 @@ export function ClientProviders({ children }) {
                   <a
                     target="_blank"
                     rel="noopener noreferrer"
-                    href=""
+                    // href=""
                   >
                     Privacy Policy
                   </a>
