@@ -1,4 +1,4 @@
-import { siweServer } from "../utils/siweServer";
+import { siweServer } from "../../utils/siweServer";
 
 // Export handlers for all HTTP methods that might be used
 export const GET = siweServer.apiRouteHandler;

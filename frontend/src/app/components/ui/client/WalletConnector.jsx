@@ -32,22 +32,16 @@ const StyledButton = styled.button`
 
 export default function WalletConnector({ compact = false }) {
   const { address, isConnecting, isDisconnected } = useAccount();
-  const { signIn, signOut, status } = useSIWE();
+  const { signIn, signOut, status, isSignedIn } = useSIWE();
   const router = useRouter();
   
   // Handle SIWE status changes
-  const handleSIWEStatus = (isConnected, show) => {
+  const getButtonText = (isConnected, show) => {
     if (isConnected) {
-      if (status === 'authenticated') {
+      if (isSignedIn) {
         return "Authenticated";
-      } else if (status === 'unauthenticated') {
-        return (
-          <Button variant='outline' onClick={signIn} className="">
-            Verify Wallet
-          </Button>
-        );
       } else {
-        return "Verifying...";
+        return "Verify Wallet";
       }
     } else {
       return "Connect Wallet";
@@ -64,16 +58,27 @@ export default function WalletConnector({ compact = false }) {
           </Text>
         </div>
       ) : (
-        <div className={compact ? "w-full" : "max-w-5xl w-full flex items-center justify-center"}>
+        <div className={compact ? "w-full" : "max-w-5xl w-full flex  items-center justify-center"}>
           <ConnectKitButton.Custom>
             {({ isConnected, show, truncatedAddress, ensName }) => {
               return (
-                <StyledButton onClick={show} compact={compact}>
-                  {isConnected ? 
-                    ensName ?? truncatedAddress ?? "Disconnect" : 
-                    handleSIWEStatus(isConnected, show)
-                  }
-                </StyledButton>
+                <div className="flex flex-col items-center justify-between gap-4">
+                  <StyledButton onClick={show} compact={compact}>
+                    {isConnected ? 
+                      ensName ?? truncatedAddress ?? "Connected" : 
+                      "Connect Wallet"
+                    }
+                  </StyledButton>
+                  {isConnected && !isSignedIn && (
+                    <Button 
+                      variant='outline' 
+                      onClick={() => signIn()} 
+                      className="ml-2"
+                    >
+                      Verify Wallet
+                    </Button>
+                  )}
+                </div>
               );
             }}
           </ConnectKitButton.Custom>
@@ -88,7 +93,7 @@ export default function WalletConnector({ compact = false }) {
         </div>
       )}
       
-      {!compact && status === 'authenticated' && (
+      {!compact && isSignedIn && (
         <div className="max-w-5xl w-full flex items-center justify-center">
           <Text variant="h5" color="success">
             Wallet verified with SIWE ✓

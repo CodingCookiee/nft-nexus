@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 const sessionOptions = {
   cookieName: "siwe",
-  password: process.env.NEXT_IRON_SESSION_PASSWORD,
+  password: process.env.IRON_SESSION_PASSWORD,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },
@@ -17,10 +17,11 @@ export async function GET() {
   session.nonce = generateNonce();
   await session.save();
 
-  return new NextResponse(session.nonce, {
+  return new NextResponse({ nonce: session.nonce }, {
     status: 200,
+    message: "Nonce generated",
     headers: {
-      "Content-Type": "text/plain",
+      "Content-Type": "application/json",
     },
   });
 }

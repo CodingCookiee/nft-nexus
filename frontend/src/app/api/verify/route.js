@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 const sessionOptions = {
   cookieName: "siwe",
-  password: process.env.NEXT_IRON_SESSION_PASSWORD,
+  password: process.env.IRON_SESSION_PASSWORD,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },
@@ -32,6 +32,9 @@ export async function POST(request) {
     }
     session.siwe = fields;
     await session.save();
+    
+    // Return a success response
+    return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("SIWE verification error", error);
     return NextResponse.json(
