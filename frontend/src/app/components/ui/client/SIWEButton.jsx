@@ -4,80 +4,35 @@ import { useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { SiweMessage } from "siwe";
 import { Button, Text, Loader } from "../common";
+import { useDirectSIWE } from "../../../hooks/useDirectSIWE";
 
 export default function SIWEButton() {
-  const { address, chainId } = useAccount();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const { signMessageAsync } = useSignMessage();
-
-  const handleSignIn = async () => {
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // 1. Get the nonce
-      const nonceRes = await fetch("/api/nonce");
-      if (!nonceRes.ok) throw new Error("Failed to get nonce");
-      const { nonce } = await nonceRes.json();
-
-      // 2. Create SIWE message
-      const message = new SiweMessage({
-        domain: window.location.host,
-        address: address,
-        statement: "Sign In With Ethereum to prove you control this wallet.",
-        uri: window.location.origin,
-        version: "1",
-        chainId: chainId,
-        nonce: nonce,
-      });
-
-      // 3. Sign message
-      const messageToSign = message.prepareMessage();
-      const signature = await signMessageAsync({ message: messageToSign });
-
-      // 4. Verify signature
-      const verifyRes = await fetch("/api/verify", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: message,
-          signature,
-        }),
-      });
-
-      if (!verifyRes.ok) {
-        const errorData = await verifyRes.json();
-        throw new Error(errorData.message || "Verification failed");
-      }
-
-      setIsAuthenticated(true);
-      console.log("Successfully authenticated!");
-    } catch (err) {
-      console.error("Authentication error:", err);
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { signIn, signOut, isLoading, error, isAuthenticated } =
+    useDirectSIWE();
 
   if (isAuthenticated) {
     return (
-      <Text variant="small" color="success" className="mt-2">
-        ✓ Wallet verified
-      </Text>
+      <div className="flex flex-col items-center gap-2">
+        <Text variant="small" color="success" className="mt-2">
+          ✓ Wallet verified
+        </Text>
+        <Button
+          variant="outline"
+          onClick={signOut}
+          disabled={isLoading}
+          size="sm"
+        >
+          Sign Out
+        </Button>
+      </div>
     );
   }
 
   return (
     <div className="mt-2">
-      <Button variant="outline" onClick={handleSignIn} disabled={isLoading}>
+      <Button variant="outline" onClick={signIn} disabled={isLoading}>
         {isLoading ? (
-          <span className="flex items-center">
+          <span className="flex items-center gap-2.5">
             <Loader width="w-4" height="h-4" className="mr-2" />
             Verifying...
           </span>
