@@ -44,10 +44,7 @@ export default function WalletConnector({ compact = false }) {
     >
       {isConnecting ? (
         <div className="flex items-center justify-between gap-4">
-          <Loader width="w-14" height="h-14" />
-          <Text variant="small" color="secondary" weight="normal">
-            Connecting to the wallet...
-          </Text>
+          <Loader width="w-10" height="h-10" />
         </div>
       ) : (
         <div
