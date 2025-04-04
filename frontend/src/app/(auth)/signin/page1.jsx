@@ -1,14 +1,14 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { useRouter } from "next/navigation";
 import { Text, Button } from "../../components/ui/common";
-import { useSIWE } from "connectkit";
+import { useSIWE } from "connectkit"; // Import useSIWE hook instead
 import WalletConnector from "../../components/ui/client/WalletConnector";
 
 const SignIn = () => {
   const router = useRouter();
-  const { isSignedIn, status } = useSIWE();
+  const { signIn, status } = useSIWE(); // Use the hook to access SIWE functionality
 
   // Handle Google Sign In
   const handleGoogleSignIn = async () => {
@@ -18,12 +18,11 @@ const SignIn = () => {
   };
 
   // Handle successful SIWE authentication
-  useEffect(() => {
-    if (isSignedIn) {
-      console.log("User is authenticated with SIWE, redirecting to dashboard");
+  React.useEffect(() => {
+    if (status === "authenticated") {
       router.push("/dashboard");
     }
-  }, [isSignedIn, router]);
+  }, [status, router]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-gray-900 dark:to-indigo-950">
@@ -47,11 +46,12 @@ const SignIn = () => {
           </Text>
         </div>
 
-        <div className="space-y-6 w-full h-full flex flex-col">
-          <div className="w-full h-full flex flex-col items-center justify-center flex-wrap p-4 rounded-lg">
+        <div className="space-y-6 w-full h-full flex flex-col ">
+          <div className="w-full h-full flex flex-col items-center justify-center flex-wrap  p-4 rounded-lg">
             <Text variant="h5" color="default" align="center" className="mb-4">
               Connect with Wallet
             </Text>
+            {/* No need for additional providers here */}
             <div className="self-center mx-auto">
               <WalletConnector compact={true} />
             </div>

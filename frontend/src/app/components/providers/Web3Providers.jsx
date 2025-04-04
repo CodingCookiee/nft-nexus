@@ -1,12 +1,12 @@
 "use client";
 
-import { ConnectKitProvider } from "connectkit";
+import { ConnectKitProvider, SIWEProvider } from "connectkit";
 import { WagmiProvider, createConfig } from "wagmi";
 import { mainnet } from "wagmi/chains";
 import { http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDefaultConfig } from "connectkit";
-import { siweClient } from '../../utils/siweClient.js'
+import { siweConfig } from '../../utils/siweClient.js'
 
 // Create the config
 const config = createConfig(
@@ -40,7 +40,8 @@ export function ClientProviders({ children }) {
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
-        <siweClient.Provider
+        <SIWEProvider
+        {...siweConfig}
           enabled={true}
           nonceRefetchInterval={300000}
           sessionRefetchInterval={300000}
@@ -64,11 +65,31 @@ export function ClientProviders({ children }) {
               truncateLongENSAddress: true,
               walletConnectCTA: 'both',
               enableSIWE: true,
+              // disclaimer: (
+              //   <>
+              //     By connecting your wallet you agree to the{" "}
+              //     <a
+              //       target="_blank"
+              //       rel="noopener noreferrer"
+              //       href=""
+              //     >
+              //       Terms of Service
+              //     </a>{" "}
+              //     and{" "}
+              //     <a
+              //       target="_blank"
+              //       rel="noopener noreferrer"
+              //       href=""
+              //     >
+              //       Privacy Policy
+              //     </a>
+              //   </>
+              // ),
             }}
           >
             {children}
           </ConnectKitProvider>
-        </siweClient.Provider>
+        </SIWEProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
