@@ -29,23 +29,26 @@ export default function SIWEButton() {
   }
 
   return (
-    <div className="mt-2">
-      <Button variant="outline" onClick={signIn} disabled={isLoading}>
-        {isLoading ? (
-          <span className="flex items-center gap-2.5">
-            <Loader width="w-4" height="h-4" className="mr-2" />
-            Verifying...
-          </span>
-        ) : (
-          "Verify Wallet"
+    <div className="flex flex-col items-center justify-center gap-2">
+      <div className="mt-2">
+        <Button variant="outline" onClick={signIn} disabled={isLoading}>
+          {isLoading ? (
+            <span className="flex items-center gap-2.5">
+              <Loader width="w-4" height="h-4" className="mr-2" />
+              Verifying...
+            </span>
+          ) : (
+            "Verify Wallet"
+          )}
+        </Button>
+      </div>
+      <div className="mt-2">
+        {error && (
+          <Text variant="small" color="error" align='center' className="mt-1">
+            Error: {error}
+          </Text>
         )}
-      </Button>
-
-      {error && (
-        <Text variant="small" color="error" className="mt-1">
-          Error: {error}
-        </Text>
-      )}
+      </div>
     </div>
   );
 }
