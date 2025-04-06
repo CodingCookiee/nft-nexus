@@ -23,11 +23,6 @@ export default function Home() {
                 Launch Dashboard
               </Button>
             </Link>
-            <Link href="/signin">
-              <Button variant="outline" size="lg" className="px-8">
-                Sign In
-              </Button>
-            </Link>
           </div>
         </div>
         

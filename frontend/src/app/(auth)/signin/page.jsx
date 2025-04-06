@@ -21,7 +21,7 @@ const SignIn = () => {
   useEffect(() => {
     if (isSignedIn) {
       console.log("User is authenticated with SIWE, redirecting to dashboard");
-      // router.push("/dashboard");
+      router.push("/dashboard");
     }
   }, [isSignedIn, router]);
 
