@@ -71,7 +71,15 @@ export default function WalletConnector({ compact = false }) {
 
                   {/* {isConnected && !isSignedIn && status !== "loading" && (
                     <button
-                      onClick={signIn}
+                      onClick={async () => {
+                        try {
+                          console.log("Attempting to sign in with SIWE");
+                          await signIn();
+                          console.log("Sign in completed");
+                        } catch (err) {
+                          console.error("SIWE sign in error:", err);
+                        }
+                      }}
                       className="px-4 py-2 text-sm font-medium text-white bg-purple-600 rounded-md hover:bg-purple-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
                     >
                       Verify Wallet
@@ -104,12 +112,20 @@ export default function WalletConnector({ compact = false }) {
                         </svg>
                         <span className="text-sm">Wallet verified</span>
                       </div>
-                      <button
-                        onClick={signOut}
+                      {/* <button
+                        onClick={async () => {
+                          try {
+                            console.log("Attempting to sign out");
+                            await signOut();
+                            console.log("Sign out completed");
+                          } catch (err) {
+                            console.error("SIWE sign out error:", err);
+                          }
+                        }}
                         className="mt-2 px-3 py-1 text-xs text-gray-600 hover:text-gray-800"
                       >
                         Sign out
-                      </button>
+                      </button> */}
                     </div>
                   )}
 

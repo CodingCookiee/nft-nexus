@@ -1,8 +1,7 @@
 'use client'
 import React from 'react';
-import { Header, Footer, Main } from './components/layout';
-import { Toaster } from './components/ui/common/sonner';
-import { Button } from './components/ui/common';
+import { Header, Footer, Main } from '../../components/layout';
+import { Toaster, Button } from '../../components/ui/common';
 import Link from 'next/link';
 
 export default function Home() {

@@ -6,7 +6,7 @@ import { mainnet } from "wagmi/chains";
 import { http } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getDefaultConfig } from "connectkit";
-import { siweClient } from '../../utils/siweClient.js'
+import { siweClient } from '../../utils/siweClient.js';
 
 // Create the config
 const config = createConfig(
@@ -28,7 +28,7 @@ const config = createConfig(
 
     // Optional App Info
     appDescription: "NFT Nexus - Your NFT Dashboard & Marketplace",
-    appUrl: "http://localhost:3001", // your app's url
+    appUrl: "http://localhost:3000", // your app's url
     appIcon: "/app/favicon.png", // your app's icon
   })
 );
@@ -42,8 +42,8 @@ export function ClientProviders({ children }) {
       <QueryClientProvider client={queryClient}>
         <siweClient.Provider
           enabled={true}
-          nonceRefetchInterval={300000}
-          sessionRefetchInterval={300000}
+          nonceRefetchInterval={60000} // Reduced to 1 minute for testing
+          sessionRefetchInterval={60000} // Reduced to 1 minute for testing
           signOutOnDisconnect={true}
           signOutOnAccountChange={true}
           signOutOnNetworkChange={true}
