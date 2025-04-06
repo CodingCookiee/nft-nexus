@@ -22,7 +22,7 @@ async function clearSession() {
     session.siwe = undefined;
     await session.save();
 
-    console.log("Server: Session cleared successfully");
+    // console.log("Server: Session cleared successfully");
 
     return NextResponse.json({ success: true });
   } catch (error) {

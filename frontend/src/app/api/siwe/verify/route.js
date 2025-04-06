@@ -18,11 +18,11 @@ export async function POST(request) {
     const session = await getIronSession(cookieStore, sessionOptions);
 
     // Log the current session nonce for debugging
-    console.log("Server: Current session nonce:", session.nonce);
+    // console.log("Server: Current session nonce:", session.nonce);
 
     const { message, signature } = await request.json();
-    console.log("Server: Received message:", message);
-    console.log("Server: Received signature:", signature);
+    // console.log("Server: Received message:", message);
+    // console.log("Server: Received signature:", signature);
 
     // Parse the message
     let siweMessage;
@@ -44,14 +44,14 @@ export async function POST(request) {
         nonce: session.nonce,
       });
 
-      console.log("Server: Verification successful:", fields);
+      // console.log("Server: Verification successful:", fields);
 
       // Store authentication in session
       session.address = fields.address;
       session.chainId = fields.chainId;
       await session.save();
 
-      console.log("Server: Authentication successful for", fields.address);
+      // console.log("Server: Authentication successful for", fields.address);
       
       // Return a success response
       return NextResponse.json({

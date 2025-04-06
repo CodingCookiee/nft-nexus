@@ -21,7 +21,7 @@ export async function GET() {
     session.nonce = generateNonce();
     await session.save();
 
-    console.log("Generated nonce:", session.nonce);
+    // console.log("Generated nonce:", session.nonce);
     
     // Return the nonce as plain text, not JSON
     return new Response(session.nonce, {

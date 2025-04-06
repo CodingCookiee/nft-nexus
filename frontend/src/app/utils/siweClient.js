@@ -15,14 +15,14 @@ export const siweClient = configureClientSIWE({
       
       // Check if the nonce is valid
       if (!nonce || nonce.includes('{') || nonce.includes('}')) {
-        console.error("Invalid nonce format:", nonce);
+        // console.error("Invalid nonce format:", nonce);
         throw new Error("Invalid nonce format received from server");
       }
       
-      console.log("Nonce fetched:", nonce);
+      // console.log("Nonce fetched:", nonce);
       return nonce;
     } catch (error) {
-      console.error("Error fetching nonce:", error);
+      // console.error("Error fetching nonce:", error);
       throw error;
     }
   },
@@ -53,14 +53,14 @@ export const siweClient = configureClientSIWE({
   },
   signOut: async () => {
     try {
-      console.log("Client: Attempting to sign out");
+      // console.log("Client: Attempting to sign out");
       
       // Try GET request first (which should work now)
       let res = await fetch("/api/siwe/logout");
       
       // If GET fails, try POST as fallback
       if (!res.ok) {
-        console.log("Client: GET logout failed, trying POST");
+        // console.log("Client: GET logout failed, trying POST");
         res = await fetch("/api/siwe/logout", {
           method: "POST",
           headers: {
@@ -75,7 +75,7 @@ export const siweClient = configureClientSIWE({
       }
       
       const data = await res.json();
-      console.log("Client: Sign out response:", data);
+      // console.log("Client: Sign out response:", data);
       return data;
     } catch (error) {
       console.error("Client: Error signing out:", error);

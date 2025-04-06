@@ -16,10 +16,10 @@ export async function GET() {
     const cookieStore = await cookies();
     const session = await getIronSession(cookieStore, sessionOptions);
 
-    console.log("Server: Session data:", {
-      address: session.address,
-      chainId: session.chainId
-    });
+    // console.log("Server: Session data:", {
+    //   address: session.address,
+    //   chainId: session.chainId
+    // });
 
     // Check if user is authenticated
     if (!session.address) {
