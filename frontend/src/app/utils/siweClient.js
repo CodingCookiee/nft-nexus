@@ -3,26 +3,26 @@
 import { configureClientSIWE } from "connectkit-next-siwe";
 
 export const siweClient = configureClientSIWE({
-  apiRoutePrefix: "/api/siwe", // This should match your route folder structure 
+  apiRoutePrefix: "/api/siwe", // This should match your route folder structure
   statement: "Sign In With Ethereum to prove you control this wallet.",
   getNonce: async () => {
     try {
       const res = await fetch("/api/siwe/nonce");
       if (!res.ok) throw new Error("Failed to fetch nonce");
-      
+
       // Get the nonce as plain text
       const nonce = await res.text();
-      
+
       // Check if the nonce is valid
-      if (!nonce || nonce.includes('{') || nonce.includes('}')) {
+      if (!nonce || nonce.includes("{") || nonce.includes("}")) {
         // console.error("Invalid nonce format:", nonce);
         throw new Error("Invalid nonce format received from server");
       }
-      
+
       // console.log("Nonce fetched:", nonce);
       return nonce;
     } catch (error) {
-      // console.error("Error fetching nonce:", error);
+      console.error("Error fetching nonce:", error);
       throw error;
     }
   },
@@ -33,7 +33,7 @@ export const siweClient = configureClientSIWE({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message, signature }),
       });
-      
+
       if (!res.ok) throw new Error("Failed to verify message");
       return await res.json();
     } catch (error) {
@@ -54,10 +54,10 @@ export const siweClient = configureClientSIWE({
   signOut: async () => {
     try {
       // console.log("Client: Attempting to sign out");
-      
+
       // Try GET request first (which should work now)
       let res = await fetch("/api/siwe/logout");
-      
+
       // If GET fails, try POST as fallback
       if (!res.ok) {
         // console.log("Client: GET logout failed, trying POST");
@@ -68,12 +68,12 @@ export const siweClient = configureClientSIWE({
           },
         });
       }
-      
+
       if (!res.ok) {
         console.error("Client: Sign out failed with status:", res.status);
         throw new Error("Failed to sign out");
       }
-      
+
       const data = await res.json();
       // console.log("Client: Sign out response:", data);
       return data;
