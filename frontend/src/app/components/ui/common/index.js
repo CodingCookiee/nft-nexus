@@ -4,4 +4,5 @@ export { LoadingDots } from './loading-dots.jsx';
 export { Loader } from './loader.jsx';
 export { Toaster } from './sonner.jsx';
 export { Input } from './input.jsx';
+export { Divider } from './divider.jsx';
 export { PageTransitionOverlay, RedirectOverlay } from './pagetransitionoverlay.jsx';

@@ -127,7 +127,7 @@ export default function WalletConnector({
                         : "Connect Wallet"}
                     </StyledButton>
 
-                    {isSignedIn && (
+                    {isSignedIn && isConnected && (
                       <div className="flex flex-col items-center gap-2.5">
                         <div className="flex items-center text-green-500">
                           <svg
