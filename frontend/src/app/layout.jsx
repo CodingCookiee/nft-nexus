@@ -1,6 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { ClientProviders } from './components/providers/ClientProviders'
-import { Web3Providers } from './components/providers/Web3Providers'
+// import { Web3Providers } from './components/providers/Web3Providers'
 import "./globals.css";
 
 const geistSans = Geist({
@@ -33,10 +33,10 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Web3Providers>
+        <ClientProviders> 
          
             {children}
-         </Web3Providers>
+         </ClientProviders>
       </body>
     </html>
   );

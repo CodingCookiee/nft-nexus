@@ -1,9 +1,4 @@
-import { siweServer } from "../../../utils/siweServer";
+// import { siweServer } from "../../../utils/siweServer";
 
-export async function GET(request, { params }) {
-  return siweServer.apiRouteHandler(request, { params });
-}
-
-export async function POST(request, { params }) {
-  return siweServer.apiRouteHandler(request, { params });
-}
+// // Use the apiRouteHandler from the configureServerSideSIWE function
+// export const { GET, POST } = siweServer.apiRouteHandler;

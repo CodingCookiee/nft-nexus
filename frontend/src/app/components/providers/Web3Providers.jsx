@@ -21,14 +21,14 @@ const config = createConfig(
         },
         
         // API keys for WalletConnect
-        walletConnectProjectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
+        walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
 
         // App info
-        appName = "NFT Nexus",
+        appName: "NFT Nexus",
         // optional app info
-        apdDescription =  "NFT Nexus - Your NFT Dashboard & Marketplace",
-        appUrl = 'http://localhost:3000',
-        appIcon = '/app/favicon.png',
+        appDescription: "NFT Nexus - Your NFT Dashboard & Marketplace",
+        appUrl: 'http://localhost:3000',
+        appIcon: '/app/favicon.png',
     
 
     })
@@ -38,46 +38,39 @@ const config = createConfig(
 const queryClient = new QueryClient();
 
 export function Web3Providers({children}) {
-    <WagmiProvider config={config}>
-        <QueryClientProvider client={queryClient}>
-            <siweClient.Provider
-            enabled={true}
-            nonceRefetchInterval={60000}
-            sessionRefetchInterval={60000}
-            signOutOnDisconnect={true}
-            signOutOnAccountChange={true}
-            signOutOnNetworkChange={true}
-            onSignIn={(session) =>{
-                console.log("User signed in:", session);
-            }
-
-            }
-            onSignOut={() => {
-                console.log("User signed out");
-            }}
-            
-            >
-                <ConnectKitProvider
-                 theme="rounded"
-                 mode="auto"
-                 options={{
-                   embedGoogleFonts: true,
-                   walletConnectName: 'WalletConnect',
-                   overlayBlur: 4,
-                   truncateLongENSAddress: true,
-                   walletConnectCTA: 'both',
-                   enableSIWE: true,
-                 }}
+    return (
+        <WagmiProvider config={config}>
+            <QueryClientProvider client={queryClient}>
+                <siweClient.Provider
+                enabled={true}
+                nonceRefetchInterval={60000}
+                sessionRefetchInterval={60000}
+                signOutOnDisconnect={true}
+                signOutOnAccountChange={true}
+                signOutOnNetworkChange={true}
+                onSignIn={(session) => {
+                    console.log("User signed in:", session);
+                }}
+                onSignOut={() => {
+                    console.log("User signed out");
+                }}
                 >
-
-
-                    { children }
-                </ConnectKitProvider>
-
-
-            </siweClient.Provider>
-
-        </QueryClientProvider>
-
-    </WagmiProvider>
+                    <ConnectKitProvider
+                    theme="rounded"
+                    mode="auto"
+                    options={{
+                        embedGoogleFonts: true,
+                        walletConnectName: 'WalletConnect',
+                        overlayBlur: 4,
+                        truncateLongENSAddress: true,
+                        walletConnectCTA: 'both',
+                        enableSIWE: true,
+                    }}
+                    >
+                        {children}
+                    </ConnectKitProvider>
+                </siweClient.Provider>
+            </QueryClientProvider>
+        </WagmiProvider>
+    );
 }

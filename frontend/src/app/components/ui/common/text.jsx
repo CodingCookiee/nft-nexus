@@ -20,6 +20,7 @@ export const Text = ({
     h6: 'text-base font-medium',
     body: 'text-base',
     small: 'text-sm',
+    extraSmall: 'text-xs',
     tiny: 'text-xs',
   };
 
