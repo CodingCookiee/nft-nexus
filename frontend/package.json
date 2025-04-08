@@ -16,6 +16,7 @@
     "clsx": "^2.1.1",
     "connectkit": "^1.8.2",
     "connectkit-next-siwe": "^0.3.0",
+    "framer-motion": "^12.6.3",
     "frontend": "file:",
     "gsap": "^3.12.7",
     "iron-session": "^8.0.4",

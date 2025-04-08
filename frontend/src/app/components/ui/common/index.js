@@ -3,4 +3,5 @@ export { Text } from './text.jsx';
 export { LoadingDots } from './loading-dots.jsx';
 export { Loader } from './loader.jsx';
 export { Toaster } from './sonner.jsx';
+export { Input } from './input.jsx';
 export { PageTransitionOverlay, RedirectOverlay } from './pagetransitionoverlay.jsx';

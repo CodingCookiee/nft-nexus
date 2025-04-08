@@ -98,7 +98,7 @@ const SignIn = () => {
               alt="NFT Nexus Logo"
               className="mx-auto h-16 w-16 mb-4"
             />
-            <Text variant="h2" color="primary" align="center">
+            <Text variant="h2" color="primary" align="center" className="bg-gradient-to-r from-[#4B0082] to-[#AAA9CF] bg-clip-text text-transparent">
               Welcome to NFT Nexus
             </Text>
             <Text
