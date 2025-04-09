@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { ConnectKitProvider } from "connectkit";
+import { ConnectKitProvider, } from "connectkit";
 import { WagmiProvider, createConfig, useAccount } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { http } from "wagmi";

@@ -8,7 +8,7 @@ import {
   Button,
   PageTransitionOverlay,
 } from "../../components/ui/common";
-import { useSIWE } from "connectkit";
+import { SIWEButton, useSIWE } from "connectkit";
 import WalletConnector from "../../components/ui/client/WalletConnector";
 
 const SignIn = () => {
@@ -128,6 +128,8 @@ const SignIn = () => {
                   // redirectPath="/dashboard"
                 />
               </div>
+
+              
             </div>
 
             <div className="relative">

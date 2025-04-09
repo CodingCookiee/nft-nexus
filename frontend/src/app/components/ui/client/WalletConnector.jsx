@@ -127,6 +127,14 @@ export default function WalletConnector({
                         : "Connect Wallet"}
                     </StyledButton>
 
+                    {/* <StyledButton
+                      showSignOutButton
+                      compact={compact}
+                      className="px-5"
+                    >
+                      Signout
+                    </StyledButton> */}
+
                     {isSignedIn && isConnected && (
                       <div className="flex flex-col items-center gap-2.5">
                         <div className="flex items-center text-green-500">
@@ -152,14 +160,8 @@ export default function WalletConnector({
                             href="/dashboard"
                             onClick={handleDashboardClick}
                           >
-                            <StyledButton compact={compact}>
-                              <Text
-                                variant="small"
-                                weight="semibold"
-                                className="text-white "
-                              >
-                                Launch Dashboard
-                              </Text>
+                            <StyledButton className="px-5" compact={compact}>
+                              Launch Dashboard
                             </StyledButton>
                           </Link>
                         </div>
