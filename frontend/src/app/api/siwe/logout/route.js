@@ -1,40 +1,39 @@
 import { getIronSession } from "iron-session";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { cookies } from "next/headers";
 
 const sessionOptions = {
   cookieName: "connectkit-next-siwe",
-  password: process.env.IRON_SESSION_PASSWORD || process.env.NEXT_SESSION_SECRET ,
-  cookieOptions: {
-    secure: process.env.NODE_ENV === "production",
+  password:
+    process.env.IRON_SESSION_PASSWORD || process.evn.NEXT_SESSION_SECRET,
+  cookiesOptions: {
+    secure: process.env.NODE_ENV == "production",
+    sameSite: "lax",
+    httpOnly: true,
+    maxAge: 60 * 60 * 24 * 30,
   },
 };
 
-// Helper function to clear the session
 async function clearSession() {
   try {
     const cookieStore = await cookies();
     const session = await getIronSession(cookieStore, sessionOptions);
 
-    // Clear the session
-    session.address = undefined;
-    session.chainId = undefined;
-    session.siwe = undefined;
-    await session.save();
+    await session.destroy();
 
-    // console.log("Server: Session cleared successfully");
-
-    return NextResponse.json({ success: true });
+    return NextResponse.json({
+      success: true,
+    });
+    session;
   } catch (error) {
-    console.error("Error logging out:", error);
+    console.error("Error logging out", error);
     return NextResponse.json(
-      { error: "Failed to log out" },
+      { error: "Failed to logout user" },
       { status: 500 }
     );
   }
 }
 
-// Support both POST and GET methods for logout
 export async function POST() {
   return clearSession();
 }
