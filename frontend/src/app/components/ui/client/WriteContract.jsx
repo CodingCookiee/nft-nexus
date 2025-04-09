@@ -9,7 +9,7 @@ import {
   increaseAllowance,
   decreaseAllowance,
 } from "../../../services/contractServices.js";
-import { Text, Button, Input, Divider, PageTransitionOverlay } from "../common";
+import { Text, Button, Input, Divider, PageTransitionOverlay, TransactionStatusOverlay } from "../common";
 import { parseUnits, formatUnits } from "ethers";
 import { toast } from "sonner";
 

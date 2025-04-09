@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 const sessionOptions = {
   cookieName: "connectkit-next-siwe",
-  password: process.env.IRON_SESSION_PASSWORD || process.env.NEXT_SESSION_SECRET || "fallback_secret_at_least_32_chars_long",
+  password: process.env.IRON_SESSION_PASSWORD || process.env.NEXT_SESSION_SECRET,
   cookieOptions: {
     secure: process.env.NODE_ENV === "production",
   },

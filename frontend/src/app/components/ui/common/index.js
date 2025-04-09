@@ -6,3 +6,4 @@ export { Toaster } from './sonner.jsx';
 export { Input } from './input.jsx';
 export { Divider } from './divider.jsx';
 export { PageTransitionOverlay, RedirectOverlay } from './pagetransitionoverlay.jsx';
+export { TransactionStatusOverlay } from './transactionstatusoverlay.jsx';
