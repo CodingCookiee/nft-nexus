@@ -1,32 +1,10 @@
 'use client';
 
 import { ConnectKitProvider } from "connectkit";
-import { WagmiProvider, createConfig } from 'wagmi';
-import { mainnet, sepolia } from 'wagmi/chains'; 
-import { http } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { getDefaultConfig } from 'connectkit'
 import { siweClient } from '../../utils/siweClient.js';
-
-const chainId = parseInt(process.env.NEXT_CHAIN_ID || '11155111');
-const activeChain = chainId === 1 ? mainnet : sepolia;
-
-const config = createConfig(getDefaultConfig({
-    chains: [activeChain],
-    transports: {
-        [mainnet.id]: http(
-        `https://eth-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_ID}`
-        ),
-        [sepolia.id]: http(
-        process.env.NEXT_RPC_URL || "https://eth-sepolia.public.blastapi.io"
-        ),
-    },
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID, 
-    appName: 'NFT Nexus',
-    appDescription: "NFT Nexus - Your NFT Dashboard & Marketplace",
-    appUrl: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3001", 
-    appIcon: "/app/favicon.png",
-}));
+import { config } from '../../utils/config.js'
 
 const queryClient = new QueryClient();
 
