@@ -1,11 +1,32 @@
-import React from 'react';
+import React from "react";
+import { Text } from "../ui/common";
+import { Button } from "../ui/common";
+import Link from 'next/link';
 
-const Header = () => {
+export default function Header() {
   return (
-    <div>
-      Header
-    </div>
+    <header className="w-full  px-5 py-5 flex justify-between items-center ">
+      <div className="flex items-center">
+        <img
+          src="/app/favicon.png"
+          alt="NFT Nexus Logo"
+          className="h-10 w-10 mr-2"
+        />
+        <Text
+          variant="h2"
+          weight="semibold"
+          className="bg-gradient-to-r from-[#4B0082] to-[#AAA9CF] bg-clip-text text-transparent"
+        >
+          NFT Nexus
+        </Text>
+      </div>
+      <div className="flex items-center justify-center px-5">
+        <Link href="/">
+          <Button variant="default" >
+            Home
+          </Button>
+        </Link>
+      </div>
+    </header>
   );
 }
-
-export default Header;
