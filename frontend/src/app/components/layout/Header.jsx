@@ -21,9 +21,9 @@ export default function Header() {
         </Text>
       </div>
       <div className="flex items-center justify-center px-5">
-        <Link href="/">
+        <Link href="/signin">
           <Button variant="default" >
-            Home
+            Signin
           </Button>
         </Link>
       </div>
