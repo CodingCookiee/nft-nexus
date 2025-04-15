@@ -6,7 +6,7 @@ const sessionOptions = {
   cookieName: "connectkit-next-siwe",
   password:
     process.env.IRON_SESSION_PASSWORD || process.evn.NEXT_SESSION_SECRET,
-  cookiesOptions: {
+  cookieOptions: {
     secure: process.env.NODE_ENV == "production",
     sameSite: "lax",
     httpOnly: true,
