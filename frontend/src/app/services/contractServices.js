@@ -3,20 +3,20 @@ import abi from "../abi/abi.json";
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 
 // Read Contract Functions
-export const getTokenName = async (publicClient) => {
-  try {
-    const data = await publicClient.readContract({
-      address: CONTRACT_ADDRESS,
-      abi,
-      functionName: "name",
-    });
+// export const getTokenName = async (publicClient) => {
+//   try {
+//     const data = await publicClient.readContract({
+//       address: CONTRACT_ADDRESS,
+//       abi,
+//       functionName: "name",
+//     });
 
-    return data;
-  } catch (error) {
-    console.error("Error fetching token name:", error);
-    throw error;
-  }
-};
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching token name:", error);
+//     throw error;
+//   }
+// };
 
 export const getTokenSymbol = async (publicClient) => {
   try {

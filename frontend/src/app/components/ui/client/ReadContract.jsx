@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Text, Button, Input, Loader, LoadingDots } from "../common";
 import {
-  getTokenName,
+  // getTokenName,
   getTokenSymbol,
   getTokenDecimals,
   getTotalSupply,
@@ -45,10 +45,10 @@ export const ReadContract = ({
 
     try {
       // Token Name
-      const name = await getTokenName(publicClient);
-      if (name) {
-        setTokenName(name);
-      }
+      // const name = await getTokenName(publicClient);
+      // if (name) {
+      //   setTokenName(name);
+      // }
 
       // Token symbol
       const symbol = await getTokenSymbol(publicClient);
@@ -155,12 +155,12 @@ export const ReadContract = ({
         // Read Contract Section
         <div className="w-full flex flex-col items-start justify-start px-5 gap-4">
           <div className="flex flex-col items-start justify-center">
-            <div className="flex items-center justify-center gap-2">
+            {/* <div className="flex items-center justify-center gap-2">
               <Text variant="h5" weight="body" color='body'>
                 Name:
               </Text>
               <Text variant="body">{tokenName || "-"}</Text>
-            </div>
+            </div> */}
             <div className="flex items-center justify-center gap-2">
               <Text variant="h5" weight="body" color='body'>
                 Decimals:
