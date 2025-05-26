@@ -1,7 +1,9 @@
 import stakingAbi from "../abi/stakingAbi.json";
+import abi from "../abi/abi.json";
 
 const STAKING_CONTRACT_ADDRESS =
   process.env.NEXT_PUBLIC_STAKING_CONTRACT_ADDRESS;
+const TOKEN_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_TOKEN_CONTRACT_ADDRESS;
 
 // Read Contract Functions
 export const getBalanceOf = async (publicClient, address) => {
@@ -214,6 +216,24 @@ export const getUserRewardPerTokenPaid = async (publicClient, address) => {
 };
 
 // Write Contract Functions
+export const approveStakingContract = async (writeContract, stakingTokenAddress, amount) => {
+  if (!amount) throw new Error("Amount is required");
+  if (!stakingTokenAddress) throw new Error("Staking token address is required");
+  
+  try {
+    return writeContract({
+      address: stakingTokenAddress,
+      abi: abi,
+      functionName: "approve",
+      args: [STAKING_CONTRACT_ADDRESS, amount],
+    });
+  } catch (error) {
+    console.error("Error approving stake tokens", error);
+    throw error;
+  }
+};
+
+
 export const stakeTokens = async (writeContract, amount) => {
   if (!amount) throw new Error("Amount is required");
 
