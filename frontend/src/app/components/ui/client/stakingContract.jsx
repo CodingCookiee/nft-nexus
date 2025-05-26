@@ -19,7 +19,7 @@ import {
   setRewardsDuration,
   notifyRewardAmount,
 } from "../../../services/stakingService.js";
-import { getAllowance } from "../../../services/contractServices.js";
+import { getAllowance, getBalanceOf as getRewardTokenBalance } from "../../../services/contractServices.js";
 
 export const StakingContract = ({
   isConfirmed,
@@ -44,6 +44,7 @@ export const StakingContract = ({
   const [currentAllowance, setCurrentAllowance] = useState("");
   const [contractOwner, setContractOwner] = useState("");
   const [isOwner, setIsOwner] = useState(false);
+  const [contractRewardBalance, setContractRewardBalance] = useState("");
 
   // Input states
   const [approveAmount, setApproveAmount] = useState("");
@@ -157,6 +158,9 @@ export const StakingContract = ({
         setRewardsTokenAddress(rewardsToken);
       }
 
+      const rewardBalance = await getRewardTokenBalance(publicClient, rewardsToken);
+      setContractRewardBalance(rewardBalance);
+
       // Contract owner
       const owner = await getOwner(publicClient);
       if (owner) {
@@ -266,7 +270,6 @@ export const StakingContract = ({
       // console.log("Current allowance in wei:", currentAllowance.toString());
       // console.log("Difference:", (currentAllowance - amountWei).toString());
       // console.log("Is amount <= allowance:", amountWei <= currentAllowance);
-      
 
       if (amountWei > currentAllowance) {
         const availableFormatted = formatTokenAmount(currentAllowance);
@@ -346,7 +349,7 @@ export const StakingContract = ({
       setIsNotifyingReward(true);
 
       const amountWei = parseUnits(rewardAmount, 18);
-      await notifyRewardAmount(writeContract, amountWei);
+      await notifyRewardAmount(writeContract, rewardAmount);
       toast.success("Notify reward amount transaction submitted!");
     } catch (err) {
       console.error("Error notifying reward amount: ", err);
@@ -473,100 +476,116 @@ export const StakingContract = ({
                   {formatAddress(rewardsTokenAddress)}
                 </Text>
               </div>
+
             </div>
           </div>
 
           <Divider className="w-full h-px bg-gray-200 dark:bg-gray-700 my-2" />
 
           {/* Admin Section - Only show if user is owner */}
-          {isOwner && (
-            <>
-              <div className="w-full bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
-                <Text
-                  variant="h4"
-                  weight="semibold"
-                  className="mb-4 text-red-700 dark:text-red-400"
-                >
-                  Admin Controls
-                </Text>
+          {/* {isOwner && ( */}
+          <>
+            <div className="w-full bg-red-50 dark:bg-red-900/20 rounded-lg p-4 border border-red-200 dark:border-red-800">
+              <Text
+                variant="h4"
+                weight="semibold"
+                className="mb-4 text-red-700 dark:text-red-400"
+              >
+                Admin Controls
+              </Text>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Set Rewards Duration */}
-                  <div className="flex flex-col gap-3">
-                    <Text variant="h5" weight="medium">
-                      Set Rewards Duration
-                    </Text>
-                    <Text variant="small" color="secondary">
-                      Current duration: {stakingPeriod || "-"} days
-                    </Text>
-                    <Input
-                      type="number"
-                      placeholder="Duration in days"
-                      value={newDuration}
-                      onChange={(e) => setNewDuration(e.target.value)}
-                    />
-                    <Button
-                      variant="default"
-                      onClick={handleSetDuration}
-                      disabled={!newDuration || isSettingDuration || !address}
-                      className="w-full"
-                    >
-                      {isSettingDuration ? "Setting..." : "Set Duration"}
-                    </Button>
-                  </div>
-
-                  {/* Notify Reward Amount */}
-                  <div className="flex flex-col gap-3">
-                    <Text variant="h5" weight="medium">
-                      Notify Reward Amount
-                    </Text>
-                    <Text variant="small" color="secondary">
-                      Current rate: {formatTokenAmount(rewardRate)} tokens/sec
-                    </Text>
-                    <Input
-                      type="text"
-                      placeholder="Total reward amount"
-                      value={rewardAmount}
-                      onChange={(e) => setRewardAmount(e.target.value)}
-                    />
-                    <Button
-                      variant="default"
-                      onClick={handleNotifyReward}
-                      disabled={!rewardAmount || isNotifyingReward || !address}
-                      className="w-full"
-                    >
-                      {isNotifyingReward ? "Notifying..." : "Notify Rewards"}
-                    </Button>
-                  </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Set Rewards Duration */}
+                <div className="flex flex-col gap-3">
+                  <Text variant="h5" weight="medium">
+                    Set Rewards Duration
+                  </Text>
+                  <Text variant="small" color="secondary">
+                    Current duration: {stakingPeriod || "-"} days
+                  </Text>
+                  <Input
+                    type="number"
+                    placeholder="Duration in days"
+                    value={newDuration}
+                    onChange={(e) => setNewDuration(e.target.value)}
+                  />
+                  <Button
+                    variant="default"
+                    onClick={handleSetDuration}
+                    disabled={!newDuration || isSettingDuration || !address}
+                    className="w-full"
+                  >
+                    {isSettingDuration ? "Setting..." : "Set Duration"}
+                  </Button>
                 </div>
 
-                {/* Admin Instructions */}
-                <div className="mt-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
-                  <Text
-                    variant="small"
-                    weight="medium"
-                    className="text-yellow-800 dark:text-yellow-200 mb-2"
-                  >
-                    Admin Instructions:
+                {/* Notify Reward Amount */}
+                <div className="flex flex-col gap-3">
+                  <Text variant="h5" weight="medium">
+                    Notify Reward Amount
                   </Text>
-                  <div className="space-y-1">
-                    <Text variant="extraSmall" color="secondary">
-                      1. First set the rewards duration (e.g., 30 days)
-                    </Text>
-                    <Text variant="extraSmall" color="secondary">
-                      2. Then notify the total reward amount for that period
-                    </Text>
-                    <Text variant="extraSmall" color="secondary">
-                      3. Make sure the contract has enough reward tokens before
-                      notifying
-                    </Text>
-                  </div>
+                  <Text variant="small" color="secondary">
+                    Current rate: {formatTokenAmount(rewardRate)} tokens/sec
+                  </Text>
+                  <Input
+                    type="text"
+                    placeholder="Total reward amount"
+                    value={rewardAmount}
+                    onChange={(e) => setRewardAmount(e.target.value)}
+                  />
+                  <Button
+                    variant="default"
+                    onClick={handleNotifyReward}
+                    disabled={!rewardAmount || isNotifyingReward || !address}
+                    className="w-full"
+                  >
+                    {isNotifyingReward ? "Notifying..." : "Notify Rewards"}
+                  </Button>
                 </div>
               </div>
 
-              <Divider className="w-full h-px bg-gray-200 dark:bg-gray-700 my-2" />
-            </>
-          )}
+              {/* Admin Instructions */}
+              <div className="mt-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-3 border border-yellow-200 dark:border-yellow-800">
+                <Text
+                  variant="small"
+                  weight="medium"
+                  className="text-yellow-800 dark:text-yellow-200 mb-2"
+                >
+                  Admin Setup Instructions:
+                </Text>
+                <div className="space-y-1">
+                  <Text variant="extraSmall" color="secondary">
+                    1. Contract has {formatTokenAmount(contractRewardBalance)}{" "}
+                    reward tokens available
+                  </Text>
+                  <Text variant="extraSmall" color="secondary">
+                    2. Set rewards duration (e.g., 30 days)
+                  </Text>
+                  <Text variant="extraSmall" color="secondary">
+                    3. Notify reward amount (must be less or equal to the available reward tokens)
+                  </Text>
+                  <Text variant="extraSmall" color="secondary">
+                    4. Users will start earning rewards immediately
+                  </Text>
+                </div>
+
+                {Number(formatTokenAmount(contractRewardBalance)) === 0 && (
+                  <div className="mt-2 p-2 bg-red-100 dark:bg-red-900/30 rounded border border-red-300 dark:border-red-700">
+                    <Text
+                      variant="extraSmall"
+                      className="text-red-700 dark:text-red-300"
+                    >
+                      ⚠️ No reward tokens in contract. Transfer reward tokens
+                      first.
+                    </Text>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <Divider className="w-full h-px bg-gray-200 dark:bg-gray-700 my-2" />
+          </>
+          {/* )} */}
 
           {/* Staking Actions Section */}
           <div className="w-full">

@@ -218,7 +218,7 @@ export const WriteContract = ({
       setIsTransferring(true);
 
       const amountWei = parseUnits(transferAmount, tokenDecimals);
-      await transferTokens(writeContract, transferRecipient, amountWei);
+      await transfer(writeContract, transferRecipient, amountWei);
       setTransferAmount("");
       setTransferRecipient("");
     } catch (error) {
@@ -280,7 +280,7 @@ export const WriteContract = ({
           <Divider className="w-full h-1 bg-neutral-300" />
 
           {/* Burn Section */}
-          <div className="flex flex-col items-start gap-2.5 w-full">
+          {/* <div className="flex flex-col items-start gap-2.5 w-full">
             <Text variant="h4" weight="semibold" align="left">
               Burn
             </Text>
@@ -298,7 +298,7 @@ export const WriteContract = ({
             >
               {isBurning ? "Burning..." : "Burn"}
             </Button>
-          </div>
+          </div> */}
 
           <Divider className="w-full h-1 bg-neutral-300" />
 
