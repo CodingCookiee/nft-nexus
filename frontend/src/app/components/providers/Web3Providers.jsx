@@ -9,7 +9,7 @@ import { config } from '../../utils/config.js'
 const queryClient = new QueryClient();
 
 export function Web3Providers({children}) {
-  return ( // Added return statement
+  return ( 
     <WagmiProvider config={config}>
       <QueryClientProvider client={queryClient}>
         <siweClient.Provider

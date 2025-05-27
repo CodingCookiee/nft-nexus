@@ -59,23 +59,6 @@ export default function WalletConnector({
     }, 300);
   };
 
-  // Monitor auth state changes and notify parent component
-  // useEffect(() => {
-  //   if (isConnected && isSignedIn && onSuccessfulAuth) {
-  //     console.log("WalletConnector: Authentication successful, notifying parent");
-  //     onSuccessfulAuth();
-
-  //     // If redirectPath is provided and we're not already redirecting via parent
-  //     if (redirectPath && !onSuccessfulAuth) {
-  //       const timer = setTimeout(() => {
-  //         console.log(`WalletConnector: Redirecting to ${redirectPath}`);
-  //         router.push(redirectPath);
-  //       }, 500);
-
-  //       return () => clearTimeout(timer);
-  //     }
-  //   }
-  // }, [isConnected, isSignedIn, onSuccessfulAuth, redirectPath, router]);
 
   return (
     <>
