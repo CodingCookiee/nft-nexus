@@ -32,21 +32,14 @@ export const config = createConfig(
       }),
       walletConnect({
         projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-        showQrModal: true, 
+        showQrModal: false, 
         metadata: {
           name: "NFT Nexus",
           description: "NFT Nexus - Your NFT Dashboard & Marketplace",
           url: APP_URL,
           icons: [`/app/favicon.png`],
         },
-        // Recommended for better mobile handling
-        relayUrl: "wss://relay.walletconnect.org",
-        // Options to improve mobile connection
-        optionalChains: [activeChain.id],
-        qrModalOptions: {
-          explorerExcludedWalletIds: "ALL",
-          themeMode: "light",
-        },
+        
       }),
     ],
     transports: {

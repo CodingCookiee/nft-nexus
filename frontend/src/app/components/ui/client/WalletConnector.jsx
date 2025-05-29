@@ -33,12 +33,12 @@ const StyledButton = styled.button`
 `;
 
 // Detect if we're on a mobile device
-const isMobile = () => {
-  if (typeof window === 'undefined') return false;
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    navigator.userAgent
-  );
-};
+// const isMobile = () => {
+//   if (typeof window === 'undefined') return false;
+//   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+//     navigator.userAgent
+//   );
+// };
 
 export default function WalletConnector({
   compact = false,
@@ -58,20 +58,20 @@ export default function WalletConnector({
   } = useSIWE();
 
   // When the component mounts, check if we need to navigate after a successful mobile auth
-  useEffect(() => {
-    if (isSignedIn && isConnected && isMobile()) {
-      // This is important for mobile - ensures the app knows we're signed in
-      const urlParams = new URLSearchParams(window.location.search);
-      const redirect = urlParams.get('redirectAfterAuth');
+  // useEffect(() => {
+  //   if (isSignedIn && isConnected && isMobile()) {
+  //     // This is important for mobile - ensures the app knows we're signed in
+  //     const urlParams = new URLSearchParams(window.location.search);
+  //     const redirect = urlParams.get('redirectAfterAuth');
       
-      if (redirect) {
-        setIsRedirecting(true);
-        setTimeout(() => {
-          router.push(redirect);
-        }, 300);
-      }
-    }
-  }, [isSignedIn, isConnected, router]);
+  //     if (redirect) {
+  //       setIsRedirecting(true);
+  //       setTimeout(() => {
+  //         router.push(redirect);
+  //       }, 300);
+  //     }
+  //   }
+  // }, [isSignedIn, isConnected, router]);
 
   const handleDashboardClick = (e) => {
     e.preventDefault(); // Prevent default link behavior
@@ -173,11 +173,11 @@ export default function WalletConnector({
                       <div className="text-red-500 text-sm mt-2 p-3 bg-red-100 rounded-lg">
                         <p className="font-semibold">Error:</p>
                         <p>{error.message}</p>
-                        {isMobile() && (
+                        {/* {isMobile() && (
                           <p className="mt-2 text-xs">
                             Note: On mobile, you may need to return to your wallet app to complete the signature.
                           </p>
-                        )}
+                        )} */}
                       </div>
                     )}
                   </div>
