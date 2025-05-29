@@ -20,18 +20,28 @@ export async function GET() {
     const cookieStore = await cookies();
     const session = await getIronSession(cookieStore, sessionOptions);
 
-    session.nonce = generateNonce();
+    // Generate a new nonce and store it in the session
+    const nonce = generateNonce();
+    session.nonce = nonce;
+    
+    // Set a timestamp to help with debugging
+    session.nonceTimestamp = Date.now();
+    
     await session.save();
 
-    return new NextResponse(session.nonce, {
+    // debug headers to help trace session issues
+    const headers = new Headers({
+      "Content-Type": "text/plain",
+      "X-Nonce-Generated": "true",
+      "Cache-Control": "no-store, max-age=0",
+    });
+
+    return new NextResponse(nonce, {
       status: 200,
-      success: true,
-      headers: {
-        "Content-Type": "text/plain",
-      },
+      headers,
     });
   } catch (error) {
-    console.error("Error generating nonce :", error);
-    return NextResponse.json({ error: "Failed to generate nonce" }, { status: 400 });
+    console.error("Error generating nonce:", error);
+    return NextResponse.json({ error: "Failed to generate nonce" }, { status: 500 });
   }
 }
