@@ -32,6 +32,14 @@ const StyledButton = styled.button`
   }
 `;
 
+// Detect if we're on a mobile device
+const isMobile = () => {
+  if (typeof window === 'undefined') return false;
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+
 export default function WalletConnector({
   compact = false,
   onSuccessfulAuth,
@@ -49,6 +57,22 @@ export default function WalletConnector({
     isLoading: siweLoading,
   } = useSIWE();
 
+  // When the component mounts, check if we need to navigate after a successful mobile auth
+  useEffect(() => {
+    if (isSignedIn && isConnected && isMobile()) {
+      // This is important for mobile - ensures the app knows we're signed in
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirectAfterAuth');
+      
+      if (redirect) {
+        setIsRedirecting(true);
+        setTimeout(() => {
+          router.push(redirect);
+        }, 300);
+      }
+    }
+  }, [isSignedIn, isConnected, router]);
+
   const handleDashboardClick = (e) => {
     e.preventDefault(); // Prevent default link behavior
     setIsRedirecting(true);
@@ -58,6 +82,7 @@ export default function WalletConnector({
       router.push("/dashboard");
     }, 300);
   };
+  
 
 
   return (
@@ -110,14 +135,7 @@ export default function WalletConnector({
                         : "Connect Wallet"}
                     </StyledButton>
 
-                    {/* <StyledButton
-                      showSignOutButton
-                      compact={compact}
-                      className="px-5"
-                    >
-                      Signout
-                    </StyledButton> */}
-
+                   
                     {isSignedIn && isConnected && (
                       <div className="flex flex-col items-center gap-2.5">
                         <div className="flex items-center text-green-500">
@@ -152,8 +170,14 @@ export default function WalletConnector({
                     )}
 
                     {error && (
-                      <div className="text-red-500 text-sm mt-2">
-                        Error: {error.message}
+                      <div className="text-red-500 text-sm mt-2 p-3 bg-red-100 rounded-lg">
+                        <p className="font-semibold">Error:</p>
+                        <p>{error.message}</p>
+                        {isMobile() && (
+                          <p className="mt-2 text-xs">
+                            Note: On mobile, you may need to return to your wallet app to complete the signature.
+                          </p>
+                        )}
                       </div>
                     )}
                   </div>

@@ -16,6 +16,9 @@ import {
 const chainId = parseInt(process.env.NEXT_PUBLIC_CHAIN_ID || "11155111");
 const activeChain = chainId === 1 ? mainnet : sepolia;
 
+// URLs for deep linking in mobile environments
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "http://192.168.30.44:3000";
+
 export const config = createConfig(
   getDefaultConfig({
     chains: [arbitrum, base, mainnet, optimism, polygon, sepolia],
@@ -23,15 +26,26 @@ export const config = createConfig(
       coinbaseWallet({
         appName: "NFT Nexus",
         appLogoUrl: "/app/favicon.png",
+        // Improve mobile deep linking
+        chainId: activeChain.id,
+        darkMode: false,
       }),
       walletConnect({
         projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID,
-         showQrModal: false,
+        showQrModal: true, 
         metadata: {
           name: "NFT Nexus",
           description: "NFT Nexus - Your NFT Dashboard & Marketplace",
-          url: process.env.NEXT_PUBLIC_APP_URL || "http://192.168.30.44:3000",
-          icons: ["/app/favicon.png"],
+          url: APP_URL,
+          icons: [`/app/favicon.png`],
+        },
+        // Recommended for better mobile handling
+        relayUrl: "wss://relay.walletconnect.org",
+        // Options to improve mobile connection
+        optionalChains: [activeChain.id],
+        qrModalOptions: {
+          explorerExcludedWalletIds: "ALL",
+          themeMode: "light",
         },
       }),
     ],
@@ -49,7 +63,7 @@ export const config = createConfig(
     },
     appName: "NFT Nexus",
     appDescription: "NFT Nexus - Your NFT Dashboard & Marketplace",
-    appUrl: process.env.NEXT_PUBLIC_APP_URL || "http://192.168.30.44:3000",
+    appUrl: APP_URL,
     appIcon: "/app/favicon.png",
   })
 );
