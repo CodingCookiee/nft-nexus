@@ -106,6 +106,7 @@ export function Web3Providers({ children }) {
               walletConnectCTA: "both",
               enableSIWE: true,
               // hideTooltips: isMobile(),
+              // TODO: Create a fallback for mobile wallets: 
             }}
           >
             {children}
